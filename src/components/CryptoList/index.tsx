@@ -3,7 +3,6 @@ import { getCoinsList } from '../../api/getCoinsList';
 import { getCoinsRates } from '../../api/getCoinsRates';
 import SearchItem from '../SearchItem';
 import CurrencySelector from '../CurrencySelector';
-import Watchlist from '../Watchlist';
 import Coin from '../Coin';
 import Box from '@mui/material/Box';
 import Grid from '@material-ui/core/Grid';
@@ -18,25 +17,42 @@ interface CoinInfo {
 const CryptoList = () => {
   const [cryptoList, setCryptoList] = useState([]);
   const [cryptoRates, setcryptoRates] = useState<{ [key: string]: number }>({});
-
+  const [currency, setCurrency] = useState('USD');
+  const [watchlist, setWatchlist] = useState<CoinInfo[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const filteredCryptoList = Object.entries(cryptoList).filter(([symbol]) =>
     symbol.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const [currency, setCurrency] = useState('USD');
-
-  const [watchlist, setWatchlist] = useState<CoinInfo[]>([]);
   const addToWatchlist = (code: string, description: string, price: number) => {
     setWatchlist([...watchlist, { code, description, price }]);
-    localStorage.setItem('watchlist', JSON.stringify(watchlist));
+    localStorage.setItem(
+      'watchlist',
+      JSON.stringify([...watchlist, { code, description, price }])
+    );
   };
 
   const removeFromWatchlist = (code: string) => {
     setWatchlist(watchlist.filter((coin) => coin.code !== code));
+    localStorage.setItem(
+      'watchlist',
+      JSON.stringify(watchlist.filter((coin) => coin.code !== code))
+    );
+  };
+
+  const currencyChangeHandler = (e: { target: { value: string } }) => {
+    const newCurrency = e.target.value;
+    setCurrency(newCurrency);
+    localStorage.setItem('currency', newCurrency);
   };
 
   useEffect(() => {
+    const storedCurreny = localStorage.getItem('currency');
+    storedCurreny && setCurrency(storedCurreny);
+
+    const storedWatchlist = localStorage.getItem('watchlist');
+    storedWatchlist && setWatchlist(JSON.parse(storedWatchlist));
+
     getCoinsList()
       .then((response) => {
         setCryptoList(response.symbols);
@@ -67,7 +83,10 @@ const CryptoList = () => {
             <SearchItem setSearchTerm={setSearchTerm} />
           </Grid>
           <Grid item xs={12} md='auto'>
-            <CurrencySelector currency={currency} setCurrency={setCurrency} />
+            <CurrencySelector
+              currency={currency}
+              setCurrency={currencyChangeHandler}
+            />
           </Grid>
         </Grid>
       </Box>
@@ -83,12 +102,18 @@ const CryptoList = () => {
             <Box sx={{ fontSize: 36, fontWeight: 600, mb: 1 }}>Wishlist</Box>
             {watchlist.length > 0 ? (
               <TableBox>
-                <Watchlist
-                  watchlist={watchlist}
-                  removeFromWatchlist={removeFromWatchlist}
-                  currency={currency}
-                  addToWatchlist={addToWatchlist}
-                />
+                {watchlist.map(({ code, description }: CoinInfo, index) => (
+                  <Coin
+                    key={index}
+                    code={code}
+                    description={description}
+                    price={cryptoRates[code]}
+                    currency={currency}
+                    addToWatchlist={addToWatchlist}
+                    watchlist={watchlist}
+                    removeFromWatchlist={removeFromWatchlist}
+                  />
+                ))}
               </TableBox>
             ) : (
               <span>

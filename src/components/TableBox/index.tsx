@@ -13,10 +13,10 @@ const TableBox = ({ children }: tableBoxProps) => {
       justifyContent='space-between'
       style={{ background: '#CCD6A6', borderRadius: '10px 10px 0 0' }}
     >
-      <Grid item xs={2} md={2} style={{ padding: '10px 0 10px 10px' }}>
-        <Box sx={{ fontWeight: 600 }}>Code</Box>
+      <Grid item xs={3} style={{ padding: '10px 0 10px 10px' }}>
+        <Box sx={{ fontWeight: 600 }}>Symbol</Box>
       </Grid>
-      <Grid item xs={4} md={5} style={{ padding: '10px 0' }}>
+      <Grid item xs={4} style={{ padding: '10px 0' }}>
         <Box sx={{ fontWeight: 600 }}>Asset</Box>
       </Grid>
       <Grid item xs={3} md={4} style={{ padding: '10px 0' }}>

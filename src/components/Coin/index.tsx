@@ -33,15 +33,15 @@ const Coin = ({
         borderBottom: '1px solid #819c55',
       }}
     >
-      <Grid item xs={2} md={2} style={{ padding: '10px 0 10px 10px' }}>
-        <Box sx={{ fontWeight: 600 }}>{code}</Box>
+      <Grid item xs={3} style={{ padding: '10px 0 10px 10px' }}>
+        <Box sx={{ fontWeight: 600 }}>{code}/{currency}</Box>
       </Grid>
-      <Grid item xs={4} md={5} style={{ padding: '10px 0' }}>
+      <Grid item xs={4} style={{ padding: '10px 0' }}>
         {description}
       </Grid>
       <Grid item xs={3} md={4} style={{ padding: '10px 0' }}>
         <Box sx={{ textAlign: 'right' }}>
-          {price} {currency}
+          {price}
         </Box>
       </Grid>
       <Grid item xs={1} style={{ padding: '10px 10px 10px 0' }}>

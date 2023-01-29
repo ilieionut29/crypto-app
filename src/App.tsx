@@ -1,6 +1,6 @@
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-import CryptoList from './components/CryptoList';
 import Header from './components/Header';
+import CryptoList from './components/CryptoList';
 
 import './style/style.css';
 

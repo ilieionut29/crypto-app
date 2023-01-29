@@ -5,7 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 
 interface CurrencySelectorProps {
   currency: string;
-  setCurrency: (value: string) => void;
+  setCurrency: any;
 }
 
 const CurrencySelector = ({ currency, setCurrency }: CurrencySelectorProps) => {
@@ -25,7 +25,7 @@ const CurrencySelector = ({ currency, setCurrency }: CurrencySelectorProps) => {
         id='currencySelector'
         value={currency}
         label='Current currency'
-        onChange={(e) => setCurrency(e.target.value)}
+        onChange={setCurrency}
       >
         <MenuItem value='USD'>United States Dollar</MenuItem>
         <MenuItem value='EUR'>Euro</MenuItem>
